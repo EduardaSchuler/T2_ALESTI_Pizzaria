@@ -38,4 +38,18 @@ public class FilaPedidosDinamica {
             }
         }
     }
+
+    public boolean pizzaioloDisponivel(){
+        if (pedidosPendentes == 0){
+            return true;
+        }
+        return false;
+    }
+
+    public void imprimirFila(int instante){
+        Nodo n = this.inicio;
+        while(n != null){
+            System.out.println("Instante de Tempo t " + instante + "Fila de pedidos " + n.pedido.getCodigo());
+        }
+    }
 }
