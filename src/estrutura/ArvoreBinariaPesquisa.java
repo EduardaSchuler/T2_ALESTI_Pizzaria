@@ -17,6 +17,7 @@ public class ArvoreBinariaPesquisa {
     private String caminhoPreOrdem;
     private String caminhoPosOrdem;
     private String caminhoCentral;
+
     public void adicionar(Pedido pedido){
         Nodo n = new Nodo(pedido);
         if(raiz == null){

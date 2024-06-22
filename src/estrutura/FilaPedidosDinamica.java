@@ -47,12 +47,6 @@ public class FilaPedidosDinamica {
         }
     }
 
-    public boolean pizzaioloDisponivel(){
-        if (pedidosPendentes == 0){
-            return true;
-        }
-        return false;
-    }
 
     public void imprimirFila(int instante){
         Nodo n = this.inicio;

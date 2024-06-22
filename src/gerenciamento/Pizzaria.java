@@ -15,20 +15,13 @@ public class Pizzaria {
 
     public void adicionarPedido(Pedido pedido){
 
-        if (!listaPedido.pizzaioloDisponivel()) {
-            listaPedido.enfileirar(pedido);
-        }
-        else{
-            abp.adicionar(pedido);
-        }
     }
 
     public void processarPedido(){
-        Pedido pedidoAtual;
-        if (listaPedido.pizzaioloDisponivel()){
-            pedidoAtual = listaPedido.getPedido();
-            listaPedido.desenfileirar();
-            abp.adicionar(pedidoAtual);
-        }
+
+    }
+
+    public boolean pizzaioloDisponivel(){
+        return false;
     }
 }
