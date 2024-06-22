@@ -1,11 +1,15 @@
+package estrutura;
+
+import gerenciamento.Pedido;
+
 public class ArvoreBinariaPesquisa {
     class Nodo{
-        int chave;
+        Pedido pedido;
         Nodo esquerda;
         Nodo direita;
         Nodo pai;
-        public Nodo(int chave){
-            this.chave = chave;
+        public Nodo(Pedido pedido){
+            this.pedido = pedido;
         }
     }
     private Nodo raiz;
@@ -13,8 +17,8 @@ public class ArvoreBinariaPesquisa {
     private String caminhoPreOrdem;
     private String caminhoPosOrdem;
     private String caminhoCentral;
-    public void adicionar(int chave){
-        Nodo n = new Nodo(chave);
+    public void adicionar(Pedido pedido){
+        Nodo n = new Nodo(pedido);
         if(raiz == null){
             raiz = n;
         }else{
@@ -22,7 +26,7 @@ public class ArvoreBinariaPesquisa {
             Nodo paidoAux = null;
             while(aux != null){
                 paidoAux = aux;
-                if(chave <= aux.chave){
+                if(pedido.getCodigo() <= aux.pedido.getCodigo()){
                     aux = aux.esquerda;
                     if (aux == null){
                         paidoAux.direita = n;
@@ -42,15 +46,15 @@ public class ArvoreBinariaPesquisa {
         percorrerEmProfundidade(raiz);
     }
     public void percorrerEmProfundidade(Nodo n){
-        caminhoPreOrdem = caminhoPreOrdem + " " + n.chave;
+        caminhoPreOrdem = caminhoPreOrdem + " " + n.pedido;
         if (n.esquerda == null){
             percorrerEmProfundidade(n.esquerda);
         }
-        caminhoCentral = caminhoCentral + " " + n.chave;
+        caminhoCentral = caminhoCentral + " " + n.pedido;
         if (n.direita == null){
             percorrerEmProfundidade(n.direita);
         }
-        caminhoPosOrdem = caminhoPosOrdem + " " + n.chave;
+        caminhoPosOrdem = caminhoPosOrdem + " " + n.pedido;
     }
     public String getCaminhoPreOrdem() {
         return caminhoPreOrdem;
@@ -73,7 +77,7 @@ public class ArvoreBinariaPesquisa {
         imprimirArvoreRecursivamente(raiz.direita, nivel);
         System.out.print("\n");
         for (int i = 5; i < nivel; i++) System.out.print(" ");
-        System.out.print(raiz.chave + "\n");
+        System.out.print(raiz.pedido + "\n");
         for (int i = 0; i < nivel; i++) System.out.print(" ");
         imprimirArvoreRecursivamente(raiz.esquerda, nivel);
     }

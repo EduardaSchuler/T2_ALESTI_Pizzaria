@@ -1,3 +1,6 @@
+package gerenciamento;
+import estrutura.*;
+
 public class Pizzaria {
     private Pedido pedidoAtual;
     private FilaPedidosDinamica listaPedido;
@@ -11,12 +14,21 @@ public class Pizzaria {
     }
 
     public void adicionarPedido(Pedido pedido){
-        listaPedido.enfileirar(pedido);
+
+        if (!listaPedido.pizzaioloDisponivel()) {
+            listaPedido.enfileirar(pedido);
+        }
+        else{
+            abp.adicionar(pedido);
+        }
     }
 
     public void processarPedido(){
-
-
-
+        Pedido pedidoAtual;
+        if (listaPedido.pizzaioloDisponivel()){
+            pedidoAtual = listaPedido.getPedido();
+            listaPedido.desenfileirar();
+            abp.adicionar(pedidoAtual);
+        }
     }
 }

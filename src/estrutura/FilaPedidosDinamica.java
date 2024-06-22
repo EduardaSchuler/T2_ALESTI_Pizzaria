@@ -1,7 +1,14 @@
+package estrutura;
+
+import gerenciamento.Pedido;
+
 public class FilaPedidosDinamica {
     class Nodo {
         Pedido pedido;
         Nodo proximo;
+
+
+
         public Nodo(Pedido pedido){
             this.pedido = pedido;
         }
@@ -13,6 +20,10 @@ public class FilaPedidosDinamica {
         pedidosPendentes = 0;
         inicio = null;
         fim = null;
+    }
+
+    public Pedido getPedido() {
+        return inicio.pedido;
     }
 
     public void enfileirar(Pedido pedido){
@@ -28,10 +39,7 @@ public class FilaPedidosDinamica {
     }
 
     public void desenfileirar(){
-        Pedido pedido = null;
-
         if(pedidosPendentes > 0){
-            pedido = inicio.pedido;
             if(inicio.proximo != null){
                 inicio = inicio.proximo;
                 pedidosPendentes--;

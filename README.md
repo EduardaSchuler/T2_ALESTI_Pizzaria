@@ -29,7 +29,7 @@ produzidos.
 Os resultados finais a serem gerados são:
 - Total de pedidos processados
 - Total de tempo executado
-- Pedido mais demorado (se tiver mais de um mostrar todos)
+- gerenciamento.Pedido mais demorado (se tiver mais de um mostrar todos)
 - Um CSV com a situação da fila a cada instante t, conforme exemplo na página anterior.
 - Um CSV com o caminhamento em ordem central da ABP gerada pelos pedidos que foram sendo processados,
 contendo apenas o código do pedido e separado por vírgula.

@@ -1,9 +1,11 @@
+package aplicacao;
+
+import estrutura.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class App {

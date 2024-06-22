@@ -1,3 +1,5 @@
+package gerenciamento;
+
 public class Pedido{
     private int codigo;
     private String saborPizza;
@@ -29,7 +31,7 @@ public class Pedido{
 
     @Override
     public String toString() {
-        return "Pedido [getCodigo()=" + getCodigo() + ", getSaborPizza()=" + getSaborPizza() + ", getInstante)=" + getInstante() + ", getTempoPreparo()="
+        return "gerenciamento.Pedido [getCodigo()=" + getCodigo() + ", getSaborPizza()=" + getSaborPizza() + ", getInstante)=" + getInstante() + ", getTempoPreparo()="
                 + getTempoPreparo() + "]";
     }
 }
