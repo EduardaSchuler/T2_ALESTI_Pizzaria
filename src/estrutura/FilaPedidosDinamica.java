@@ -3,55 +3,55 @@ package estrutura;
 import gerenciamento.Pedido;
 
 public class FilaPedidosDinamica {
-    class Nodo {
-        Pedido pedido;
-        Nodo proximo;
-
-
-
-        public Nodo(Pedido pedido){
-            this.pedido = pedido;
-        }
-    }
     private Nodo inicio;
     private Nodo fim;
     private int pedidosPendentes;
-    public FilaPedidosDinamica(){
+
+    public FilaPedidosDinamica() {
         pedidosPendentes = 0;
         inicio = null;
         fim = null;
     }
 
-    public Pedido getPedido() {
-        return inicio.pedido;
+    public Nodo getInicio() {
+        return inicio;
     }
 
-    public void enfileirar(Pedido pedido){
+    public Pedido getPedido() {
+        return inicio.getPedido();
+    }
+
+    public void enfileirar(Pedido pedido) {
         Nodo n = new Nodo(pedido);
-        if(pedidosPendentes == 0){
+        if (pedidosPendentes == 0) {
             inicio = n;
             fim = n;
         } else {
-            fim.proximo = n;
+            fim.setProximo(n);
             fim = n;
         }
         pedidosPendentes++;
     }
 
-    public void desenfileirar(){
-        if(pedidosPendentes > 0){
-            if(inicio.proximo != null){
-                inicio = inicio.proximo;
+    public void desenfileirar() {
+        if (pedidosPendentes > 0) {
+            if (inicio.getProximo() != null) {
+                inicio = inicio.getProximo();
                 pedidosPendentes--;
             }
         }
     }
 
+    public int getPedidosPendentes() {
+        return pedidosPendentes;
+    }
 
-    public void imprimirFila(int instante){
+    public void imprimirFila(int instante) {
         Nodo n = this.inicio;
-        while(n != null){
-            System.out.println("Instante de Tempo t " + instante + "Fila de pedidos " + n.pedido.getCodigo());
+        while (n != null) {
+            System.out.println("Instante de Tempo t " + instante + " Fila de pedidos " + n.getPedido().getCodigo());
+            n = n.getProximo();
         }
     }
 }
+

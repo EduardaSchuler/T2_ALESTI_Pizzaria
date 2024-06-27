@@ -1,9 +1,9 @@
-gerenciamento.Pedido [getCodigo()=10422, getSaborPizza()=Portuguesa, getInstante)=1, getTempoPreparo()=25]
-gerenciamento.Pedido [getCodigo()=91678, getSaborPizza()=Frango com Catupiry, getInstante)=1, getTempoPreparo()=20]
-gerenciamento.Pedido [getCodigo()=88544, getSaborPizza()=Pepperoni, getInstante)=1, getTempoPreparo()=13]
-gerenciamento.Pedido [getCodigo()=43242, getSaborPizza()=Pepperoni, getInstante)=1, getTempoPreparo()=16]
-gerenciamento.Pedido [getCodigo()=69922, getSaborPizza()=Quatro Queijos, getInstante)=1, getTempoPreparo()=24]
-gerenciamento.Pedido [getCodigo()=47257, getSaborPizza()=Pepperoni, getInstante)=1, getTempoPreparo()=24]
-gerenciamento.Pedido [getCodigo()=38151, getSaborPizza()=Pepperoni, getInstante)=1, getTempoPreparo()=10]
-gerenciamento.Pedido [getCodigo()=50915, getSaborPizza()=Vegetariana, getInstante)=1, getTempoPreparo()=21]
-gerenciamento.Pedido [getCodigo()=59691, getSaborPizza()=Frango com Catupiry, getInstante)=1, getTempoPreparo()=22]
+Codigo:10422, Sabor: Portuguesa, Instante:1, Tempo de preparo:25
+Codigo:91678, Sabor: Frango com Catupiry, Instante:1, Tempo de preparo:20
+Codigo:88544, Sabor: Pepperoni, Instante:1, Tempo de preparo:13
+Codigo:43242, Sabor: Pepperoni, Instante:1, Tempo de preparo:16
+Codigo:69922, Sabor: Quatro Queijos, Instante:1, Tempo de preparo:24
+Codigo:47257, Sabor: Pepperoni, Instante:1, Tempo de preparo:24
+Codigo:38151, Sabor: Pepperoni, Instante:1, Tempo de preparo:10
+Codigo:50915, Sabor: Vegetariana, Instante:1, Tempo de preparo:21
+Codigo:59691, Sabor: Frango com Catupiry, Instante:1, Tempo de preparo:22

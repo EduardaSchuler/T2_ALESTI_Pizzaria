@@ -31,7 +31,7 @@ public class Pedido{
 
     @Override
     public String toString() {
-        return "gerenciamento.Pedido [getCodigo()=" + getCodigo() + ", getSaborPizza()=" + getSaborPizza() + ", getInstante)=" + getInstante() + ", getTempoPreparo()="
-                + getTempoPreparo() + "]";
+        return "Codigo:" + getCodigo() + ", Sabor: " + getSaborPizza() + ", Instante:" + getInstante() + ", Tempo de preparo:"
+                + getTempoPreparo();
     }
 }

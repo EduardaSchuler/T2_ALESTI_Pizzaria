@@ -3,60 +3,58 @@ package estrutura;
 import gerenciamento.Pedido;
 
 public class ArvoreBinariaPesquisa {
-    class Nodo{
-        Pedido pedido;
-        Nodo esquerda;
-        Nodo direita;
-        Nodo pai;
-        public Nodo(Pedido pedido){
-            this.pedido = pedido;
-        }
-    }
     private Nodo raiz;
     private int tamanho;
     private String caminhoPreOrdem;
     private String caminhoPosOrdem;
     private String caminhoCentral;
 
-    public void adicionar(Pedido pedido){
+    public void adicionar(Pedido pedido) {
         Nodo n = new Nodo(pedido);
-        if(raiz == null){
+        if (raiz == null) {
             raiz = n;
-        }else{
+        } else {
             Nodo aux = raiz;
             Nodo paidoAux = null;
-            while(aux != null){
+            while (aux != null) {
                 paidoAux = aux;
-                if(pedido.getCodigo() <= aux.pedido.getCodigo()){
-                    aux = aux.esquerda;
-                    if (aux == null){
-                        paidoAux.direita = n;
+                if (pedido.getCodigo() <= aux.getPedido().getCodigo()) {
+                    aux = aux.getEsquerda();
+                    if (aux == null) {
+                        paidoAux.setEsquerda(n);
+                    }
+                } else {
+                    aux = aux.getDireita();
+                    if (aux == null) {
+                        paidoAux.setDireita(n);
                     }
                 }
             }
         }
         tamanho++;
     }
-    public int getTamanho(){
+
+    public int getTamanho() {
         return tamanho;
     }
-    public void percorrerEmProfundidade(){
+
+    public void percorrerEmProfundidade() {
         caminhoPreOrdem = "";
         caminhoPosOrdem = "";
         caminhoCentral = "";
         percorrerEmProfundidade(raiz);
     }
-    public void percorrerEmProfundidade(Nodo n){
-        caminhoPreOrdem = caminhoPreOrdem + " " + n.pedido;
-        if (n.esquerda == null){
-            percorrerEmProfundidade(n.esquerda);
+
+    private void percorrerEmProfundidade(Nodo n) {
+        if (n != null) {
+            caminhoPreOrdem += " " + n.getPedido();
+            percorrerEmProfundidade(n.getEsquerda());
+            caminhoCentral += " " + n.getPedido();
+            percorrerEmProfundidade(n.getDireita());
+            caminhoPosOrdem += " " + n.getPedido();
         }
-        caminhoCentral = caminhoCentral + " " + n.pedido;
-        if (n.direita == null){
-            percorrerEmProfundidade(n.direita);
-        }
-        caminhoPosOrdem = caminhoPosOrdem + " " + n.pedido;
     }
+
     public String getCaminhoPreOrdem() {
         return caminhoPreOrdem;
     }
@@ -68,18 +66,20 @@ public class ArvoreBinariaPesquisa {
     public String getCaminhoCentral() {
         return caminhoCentral;
     }
-    public void imprimirArvore(){
+
+    public void imprimirArvore() {
         imprimirArvoreRecursivamente(this.raiz, 0);
     }
 
     private void imprimirArvoreRecursivamente(Nodo raiz, int nivel) {
         if (raiz == null) return;
-        nivel+=5;
-        imprimirArvoreRecursivamente(raiz.direita, nivel);
+        nivel += 5;
+        imprimirArvoreRecursivamente(raiz.getDireita(), nivel);
         System.out.print("\n");
         for (int i = 5; i < nivel; i++) System.out.print(" ");
-        System.out.print(raiz.pedido + "\n");
+        System.out.print(raiz.getPedido() + "\n");
         for (int i = 0; i < nivel; i++) System.out.print(" ");
-        imprimirArvoreRecursivamente(raiz.esquerda, nivel);
+        imprimirArvoreRecursivamente(raiz.getEsquerda(), nivel);
     }
 }
+
