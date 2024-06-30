@@ -34,4 +34,8 @@ public class Pedido{
         return "Codigo:" + getCodigo() + ", Sabor: " + getSaborPizza() + ", Instante:" + getInstante() + ", Tempo de preparo:"
                 + getTempoPreparo();
     }
+
+    public void setTempoPreparo(int tempoPreparo) {
+        this.tempoPreparo = tempoPreparo;
+    }
 }

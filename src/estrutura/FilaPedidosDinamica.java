@@ -53,5 +53,8 @@ public class FilaPedidosDinamica {
             n = n.getProximo();
         }
     }
+    public boolean estaVazia() {
+        return inicio == null;
+    }
 }
 
