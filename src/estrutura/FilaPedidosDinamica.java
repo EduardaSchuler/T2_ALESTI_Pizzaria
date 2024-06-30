@@ -33,13 +33,14 @@ public class FilaPedidosDinamica {
         pedidosPendentes++;
     }
 
-    public void desenfileirar() {
+    public Pedido desenfileirar() {
         if (pedidosPendentes > 0) {
             if (inicio.getProximo() != null) {
                 inicio = inicio.getProximo();
                 pedidosPendentes--;
             }
         }
+        return null;
     }
 
     public int getPedidosPendentes() {

@@ -81,5 +81,15 @@ public class ArvoreBinariaPesquisa {
         for (int i = 0; i < nivel; i++) System.out.print(" ");
         imprimirArvoreRecursivamente(raiz.getEsquerda(), nivel);
     }
+    public void emOrdem(StringBuilder sb) {
+        emOrdemRecursivo(raiz, sb);
+    }
+    private void emOrdemRecursivo(Nodo nodo, StringBuilder sb) {
+        if (nodo != null) {
+            emOrdemRecursivo(nodo.getEsquerda(), sb);
+            sb.append(nodo.getPedido().getCodigo()).append(",");
+            emOrdemRecursivo(nodo.getDireita(), sb);
+        }
+    }
 }
 

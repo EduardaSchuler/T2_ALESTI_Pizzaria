@@ -4,35 +4,42 @@ import estrutura.*;
 public class Pizzaria {
     private Pedido pedidoAtual;
     private FilaPedidosDinamica listaPedido;
-    private int tempoAtual;
+    private int tempoTotal;
     private ArvoreBinariaPesquisa abp;
 
     public Pizzaria(){
         this.pedidoAtual = null;
         this.listaPedido = new FilaPedidosDinamica();
-        this.tempoAtual = 0;
+        this.tempoTotal = 0;
         this.abp = new ArvoreBinariaPesquisa();
     }
 
-    public void adicionarPedido(Pedido pedido){
-        listaPedido.enfileirar(pedido);
+    public void adicionarPedido(Pedido pedido) {
+        if (pedidoAtual == null) {
+            pedidoAtual = pedido;
+        } else {
+            listaPedido.enfileirar(pedido);
+        }
     }
 
-    public void processarPedido(){
-        if (pedidoAtual == null && !listaPedido.estaVazia()) {
-            listaPedido.desenfileirar();
-            tempoAtual = 0;
-        }
+    public void processarPedido() {
         if (pedidoAtual != null) {
             pedidoAtual.setTempoPreparo(pedidoAtual.getTempoPreparo() - 1);
-            tempoAtual++;
+            tempoTotal++;
             if (pedidoAtual.getTempoPreparo() <= 0) {
                 abp.adicionar(pedidoAtual);
                 pedidoAtual = null;
             }
         }
     }
-    public boolean pizzaioloDisponivel(){
+    public boolean pizzaioloDisponivel() {
         return pedidoAtual == null;
     }
+    public Pedido getPedidoAtual() {
+        return pedidoAtual;
+    }
+    public ArvoreBinariaPesquisa getPedidosProntos() {
+        return abp;
+    }
 }
+
