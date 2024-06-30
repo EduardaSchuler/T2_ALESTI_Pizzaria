@@ -16,16 +16,14 @@ public class App {
     private Scanner entrada;
     private FilaPedidosDinamica filaPedidosDinamica;
     private Pizzaria pizzaria;
-    private PrintStream saidaGeral;
     private PrintStream situacaoFilaSaida;
     private PrintStream caminhamentoCentralSaida;
 
     public App(){
         try {
-            BufferedReader streamEntrada = new BufferedReader(new FileReader("pedidos_pizza_1000.csv"));
+            BufferedReader streamEntrada = new BufferedReader(new FileReader("pedidos_pizza_15.csv"));
             entrada = new Scanner(streamEntrada);
-            entrada.useDelimiter("[;\r]");
-            saidaGeral = new PrintStream(new File("saida.csv"), StandardCharsets.UTF_8);
+            entrada.useDelimiter(",");
             situacaoFilaSaida = new PrintStream(new File("situacao_fila.csv"), StandardCharsets.UTF_8);
             caminhamentoCentralSaida = new PrintStream(new File("caminhamento_central.csv"), StandardCharsets.UTF_8);
         } catch (Exception e) {
@@ -36,36 +34,43 @@ public class App {
     }
 
     public void executa(){
-        //new JanelaPedido();
         recebePedido();
     }
-
     private void recebePedido() {
         int codigo;
         String saborPizza;
         int instante;
         int tempoPreparo;
         Pedido pedido;
-        while (entrada.hasNextLine()) {
-            codigo = entrada.nextInt();
-            saborPizza = entrada.next();
-            instante = entrada.nextInt();
-            tempoPreparo = entrada.nextInt();
-            pedido = new Pedido(codigo, saborPizza, instante, tempoPreparo);
-            pizzaria.adicionarPedido(pedido);
-            saidaGeral.println(pedido.toString());
+        if (entrada.hasNextLine()) {
             entrada.nextLine();
         }
-
+        try {
+            while (entrada.hasNextLine()) {
+                String linha = entrada.nextLine().trim();
+                if (linha.isEmpty()) {
+                    continue;
+                }
+                String[] valores = linha.split(",");
+                if (valores.length == 4) {
+                    codigo = Integer.parseInt(valores[0].trim());
+                    saborPizza = valores[1].trim();
+                    instante = Integer.parseInt(valores[2].trim());
+                    tempoPreparo = Integer.parseInt(valores[3].trim());
+                    pedido = new Pedido(codigo, saborPizza, instante, tempoPreparo);
+                    pizzaria.adicionarPedido(pedido);
+                } else {
+                    System.out.println("Formato inválido na linha: " + linha);
+                }
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Erro de formato na entrada.");
+            e.printStackTrace();
+        } finally {
         situacaoFilaSaida.println("implementar");
-
         caminhamentoCentralSaida.println("implementar");
-    }
 
-    private void closeStreams() {
-        saidaGeral.close();
-        situacaoFilaSaida.close();
-        caminhamentoCentralSaida.close();
     }
+}
 }
 
