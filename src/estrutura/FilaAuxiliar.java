@@ -13,7 +13,6 @@ public class FilaAuxiliar {
         fim = null;
         tamanho = 0;
     }
-
     // Método para adicionar um pedido na fila auxiliar.
     public void enfileirar(Pedido pedido) {
         Nodo n = new Nodo(pedido);
@@ -31,10 +30,18 @@ public class FilaAuxiliar {
     public Pedido desenfileirar() {
         if (tamanho > 0) {
             if (inicio.getProximo() != null) {
+                Pedido aux = inicio.getPedido();
                 inicio = inicio.getProximo();
                 tamanho--;
+                return aux;
             }
         }
         return null;
+    }
+    public boolean filaAuxEstaVazia() {
+        return inicio == null;
+    }
+    public Pedido getInicio(){
+        return inicio.getPedido();
     }
 }

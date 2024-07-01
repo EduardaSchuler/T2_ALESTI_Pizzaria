@@ -1,5 +1,4 @@
 package aplicacao;
-
 import estrutura.*;
 import gerenciamento.*;
 
@@ -11,6 +10,7 @@ public class App {
     private Scanner entrada;
     private FilaPedidosDinamica filaPedidosDinamica;
     private Pizzaria pizzaria;
+    private FilaAuxiliar filaAux;
     private PrintStream situacaoFilaSaida; // É o arquivo de saída.
 
     public App() {
@@ -23,6 +23,7 @@ public class App {
             System.out.println(e);
         }
         filaPedidosDinamica = new FilaPedidosDinamica();
+        filaAux = new FilaAuxiliar();
         pizzaria = new Pizzaria();
     }
 
@@ -48,7 +49,6 @@ public class App {
             situacaoFilaSaida.close();
         }
     }
-
     // A cada pressioamento de ENTER este método deve ser executado. Cada ENTER representa um ciclo.
     private void processaCiclo(int tempo) {
         String linha;
@@ -61,23 +61,17 @@ public class App {
                     String saborPizza = valores[1]; // O sabor
                     int instante = Integer.parseInt(valores[2]); // O instante "t"
                     int tempoPreparo = Integer.parseInt(valores[3]); // O tempo de preparo
-
-                    // É possível ter 2 pedidos no mesmo instante.
-                    if (instante == tempo) { // Um pedido só pode ser criado no instante em que chegou.
-                        Pedido pedido = new Pedido(codigo, saborPizza, instante, tempoPreparo); // O pedido de fato está sendo criado.
-                        System.out.println("Pedido recebido: " + pedido);
-                        if (pizzaria.pizzaioloDisponivel()) {
-                            pizzaria.adicionarPedido(pedido);
-                            System.out.println("Pedido de " + saborPizza + " em produção."); // Até aqui está correto.
-                        } else { // Se o pizzaiolo não estiver disponível.
-                            filaPedidosDinamica.enfileirar(pedido); // Ele está colocando na fila.
-                            System.out.println("Pedido de " + saborPizza + " adicionado à fila de espera.");
-                        } // Até aqui tá certo.
-                    }
+                    Pedido p = new Pedido(codigo, saborPizza, instante, tempoPreparo); // O pedido de fato está sendo criado.
+                    filaAux.enfileirar(p);
                 } catch (NumberFormatException e) {
-                    System.out.println("Erro de formato na entrada.");
-                }
+                    throw new RuntimeException(e);
             }
+          }
+        }
+        //Passando para a fila principal.
+        while(!filaAux.filaAuxEstaVazia() && filaAux.getInicio().getInstante() == tempo){
+            Pedido p = filaAux.desenfileirar();
+             filaPedidosDinamica.enfileirar(p);
         }
 
         pizzaria.processarPedido();
