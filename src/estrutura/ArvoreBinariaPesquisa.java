@@ -5,10 +5,9 @@ import gerenciamento.Pedido;
 public class ArvoreBinariaPesquisa {
     private Nodo raiz;
     private int tamanho;
-    private String caminhoPreOrdem;
-    private String caminhoPosOrdem;
-    private String caminhoCentral;
+    private String caminhoCentral; // Precisamos utilizar apenas caminhamento central.
 
+    // Certo!
     public void adicionar(Pedido pedido) {
         Nodo n = new Nodo(pedido);
         if (raiz == null) {
@@ -34,43 +33,43 @@ public class ArvoreBinariaPesquisa {
         tamanho++;
     }
 
+    // Certo!
     public int getTamanho() {
         return tamanho;
     }
 
+    // Precisamos apenas o caminhamento central.
+    // Certo!
     public void percorrerEmProfundidade() {
-        caminhoPreOrdem = "";
-        caminhoPosOrdem = "";
         caminhoCentral = "";
         percorrerEmProfundidade(raiz);
     }
 
+    // Certo!
+    // Este método é chamado dentro do percorrerEmProfundaidade().
     private void percorrerEmProfundidade(Nodo n) {
         if (n != null) {
-            caminhoPreOrdem += " " + n.getPedido();
-            percorrerEmProfundidade(n.getEsquerda());
-            caminhoCentral += " " + n.getPedido();
-            percorrerEmProfundidade(n.getDireita());
-            caminhoPosOrdem += " " + n.getPedido();
+            if(n.getEsquerda()!=null) {
+                percorrerEmProfundidade(n.getEsquerda());
+            }
+            caminhoCentral = caminhoCentral + " " + n.getPedido().getCodigo();
+            if(n.getDireita()!=null) {
+                percorrerEmProfundidade(n.getDireita());
+            }
         }
     }
 
-    public String getCaminhoPreOrdem() {
-        return caminhoPreOrdem;
-    }
-
-    public String getCaminhoPosOrdem() {
-        return caminhoPosOrdem;
-    }
-
+    // Certo!
     public String getCaminhoCentral() {
         return caminhoCentral;
     }
 
+    // Certo!
     public void imprimirArvore() {
         imprimirArvoreRecursivamente(this.raiz, 0);
     }
 
+    // Certo!
     private void imprimirArvoreRecursivamente(Nodo raiz, int nivel) {
         if (raiz == null) return;
         nivel += 5;
@@ -80,16 +79,6 @@ public class ArvoreBinariaPesquisa {
         System.out.print(raiz.getPedido() + "\n");
         for (int i = 0; i < nivel; i++) System.out.print(" ");
         imprimirArvoreRecursivamente(raiz.getEsquerda(), nivel);
-    }
-    public void emOrdem(StringBuilder sb) {
-        emOrdemRecursivo(raiz, sb);
-    }
-    private void emOrdemRecursivo(Nodo nodo, StringBuilder sb) {
-        if (nodo != null) {
-            emOrdemRecursivo(nodo.getEsquerda(), sb);
-            sb.append(nodo.getPedido().getCodigo()).append(",");
-            emOrdemRecursivo(nodo.getDireita(), sb);
-        }
     }
 }
 

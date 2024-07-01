@@ -5,7 +5,7 @@ import gerenciamento.Pedido;
 public class FilaPedidosDinamica {
     private Nodo inicio;
     private Nodo fim;
-    private int pedidosPendentes;
+    private int pedidosPendentes; // É o tamanho!
 
     public FilaPedidosDinamica() {
         pedidosPendentes = 0;
@@ -21,6 +21,7 @@ public class FilaPedidosDinamica {
         return inicio.getPedido();
     }
 
+    // Certo!
     public void enfileirar(Pedido pedido) {
         Nodo n = new Nodo(pedido);
         if (pedidosPendentes == 0) {
@@ -33,6 +34,8 @@ public class FilaPedidosDinamica {
         pedidosPendentes++;
     }
 
+    // O pedido que foi desenfileirado não precisa ser retornado? Talvez para enviar o pedido para produção.
+    // Certo!
     public Pedido desenfileirar() {
         if (pedidosPendentes > 0) {
             if (inicio.getProximo() != null) {
@@ -43,10 +46,14 @@ public class FilaPedidosDinamica {
         return null;
     }
 
+    // Certo! É para pegar o tamanho.
     public int getPedidosPendentes() {
         return pedidosPendentes;
     }
 
+
+    // Imprime a fila em determinado instante. Ou seja a cada ENTER terei um instante diferente, logo a fila muda.
+    // Certo!
     public void imprimirFila(int instante) {
         Nodo n = this.inicio;
         while (n != null) {
@@ -54,6 +61,8 @@ public class FilaPedidosDinamica {
             n = n.getProximo();
         }
     }
+
+    // Certo!
     public boolean estaVazia() {
         return inicio == null;
     }

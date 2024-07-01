@@ -1,8 +1,7 @@
 package aplicacao;
 
 import estrutura.*;
-import gerenciamento.Pedido;
-import gerenciamento.Pizzaria;
+import gerenciamento.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -12,24 +11,27 @@ public class App {
     private Scanner entrada;
     private FilaPedidosDinamica filaPedidosDinamica;
     private Pizzaria pizzaria;
-    private PrintStream situacaoFilaSaida;
+    private PrintStream situacaoFilaSaida; // É o arquivo de saída.
 
     public App() {
         try {
-            BufferedReader streamEntrada = new BufferedReader(new FileReader("pedidos_pizza_15.csv"));
+            BufferedReader streamEntrada = new BufferedReader(new FileReader("pedidos_pizza_15.csv")); // Este é o arquivo de entrada.
             entrada = new Scanner(streamEntrada);
-            situacaoFilaSaida = new PrintStream(new File("situacao_fila.csv"), StandardCharsets.UTF_8);
+            situacaoFilaSaida = new PrintStream(new File("situacao_fila.csv"), StandardCharsets.UTF_8); // Este é o arquivo de saída.
+            // Precisamos um para árvore também.
         } catch (Exception e) {
             System.out.println(e);
         }
         filaPedidosDinamica = new FilaPedidosDinamica();
         pizzaria = new Pizzaria();
     }
+
+    // Este método atualiza conforme o tempo "t".
     public void executa() {
         Scanner teclado = new Scanner(System.in);
         int tempo = 0;
         try {
-            if (entrada.hasNextLine()) {
+            if (entrada.hasNextLine()) { // Isso ocorre para pular a linha do cabeçalho.
                 entrada.nextLine();
             }
             situacaoFilaSaida.println("Instante de Tempo t,Fila de pedidos,Em produção,Prontos");
@@ -46,48 +48,38 @@ public class App {
             situacaoFilaSaida.close();
         }
     }
+
+    // A cada pressioamento de ENTER este método deve ser executado. Cada ENTER representa um ciclo.
     private void processaCiclo(int tempo) {
         String linha;
         while (entrada.hasNextLine()) {
-            linha = entrada.nextLine().trim();
-            if (linha.isEmpty()) {
-                continue;
-            }
+            linha = entrada.nextLine(); // O .trim() ignora espaços.
             String[] valores = linha.split(",");
-            if (valores.length == 4) {
+            if (valores.length == 4) { // Temos índex de 0 a 3.
                 try {
-                    int codigo = Integer.parseInt(valores[0].trim());
-                    String saborPizza = valores[1].trim();
-                    int instante = Integer.parseInt(valores[2].trim());
-                    int tempoPreparo = Integer.parseInt(valores[3].trim());
-                    if (instante <= tempo) {
-                        Pedido pedido = new Pedido(codigo, saborPizza, instante, tempoPreparo);
-                        //funciona
+                    int codigo = Integer.parseInt(valores[0]); // O código
+                    String saborPizza = valores[1]; // O sabor
+                    int instante = Integer.parseInt(valores[2]); // O instante "t"
+                    int tempoPreparo = Integer.parseInt(valores[3]); // O tempo de preparo
+
+                    // É possível ter 2 pedidos no mesmo instante.
+                    if (instante == tempo) { // Um pedido só pode ser criado no instante em que chegou.
+                        Pedido pedido = new Pedido(codigo, saborPizza, instante, tempoPreparo); // O pedido de fato está sendo criado.
                         System.out.println("Pedido recebido: " + pedido);
                         if (pizzaria.pizzaioloDisponivel()) {
                             pizzaria.adicionarPedido(pedido);
-                            System.out.println("Pedido de " + saborPizza + " em produção.");
-                        } else {
-                            filaPedidosDinamica.enfileirar(pedido);
+                            System.out.println("Pedido de " + saborPizza + " em produção."); // Até aqui está correto.
+                        } else { // Se o pizzaiolo não estiver disponível.
+                            filaPedidosDinamica.enfileirar(pedido); // Ele está colocando na fila.
                             System.out.println("Pedido de " + saborPizza + " adicionado à fila de espera.");
-                        }
-                    } else {
-                        entrada = new Scanner(new BufferedReader(new FileReader("pedidos_pizza_15.csv")));
-                        entrada.nextLine();
-                        for (int i = 0; i <= tempo; i++) {
-                            if (entrada.hasNextLine()) {
-                                entrada.nextLine();
-                            }
-                        }
-                        break;
+                        } // Até aqui tá certo.
                     }
                 } catch (NumberFormatException e) {
                     System.out.println("Erro de formato na entrada.");
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
                 }
             }
         }
+
         pizzaria.processarPedido();
         if (pizzaria.pizzaioloDisponivel() && !filaPedidosDinamica.estaVazia()) {
             Pedido proximoPedido = filaPedidosDinamica.desenfileirar();
@@ -101,8 +93,7 @@ public class App {
     private void registrarSituacaoFila(int instante) {
         StringBuilder fila = new StringBuilder();
         Nodo nodoAtual = filaPedidosDinamica.getInicio();
-        //nao esta adicionando a fila, o getInicio retorna null no teste
-        System.out.println(filaPedidosDinamica.getInicio());
+        System.out.println(filaPedidosDinamica.getInicio()); //Não esta adicionando a fila, o getInicio retorna null no teste
         while (nodoAtual != null) {
             Pedido pedido = nodoAtual.getPedido();
             fila.append(pedido.getCodigo()).append(",");
@@ -111,11 +102,11 @@ public class App {
         if (fila.length() > 0) fila.setLength(fila.length() - 1);
         Pedido emProducao = pizzaria.getPedidoAtual();
         StringBuilder prontos = new StringBuilder();
-        pizzaria.getPedidosProntos().emOrdem(prontos);
+        // pizzaria.getPedidosProntos().emOrdem(prontos);
         // falta implementar algo para ver o que esta sendo produzido
         System.out.println(instante + fila.toString());
         if (prontos.length() > 0) prontos.setLength(prontos.length() - 1);
-        situacaoFilaSaida.printf("%d,%s,%s,%s%n", instante, fila.toString(), prontos.toString());
+        // situacaoFilaSaida.printf("%d,%s,%s,%s%n", instante, fila.toString(), prontos.toString());
     }
 }
 
