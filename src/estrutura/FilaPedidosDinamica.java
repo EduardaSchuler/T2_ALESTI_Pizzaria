@@ -33,7 +33,6 @@ public class FilaPedidosDinamica {
         }
         pedidosPendentes++;
     }
-
     // O pedido que foi desenfileirado não precisa ser retornado? Talvez para enviar o pedido para produção.
     // Certo!
     public Pedido desenfileirar() {
