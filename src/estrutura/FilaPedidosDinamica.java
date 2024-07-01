@@ -54,12 +54,14 @@ public class FilaPedidosDinamica {
 
     // Imprime a fila em determinado instante. Ou seja a cada ENTER terei um instante diferente, logo a fila muda.
     // Certo!
-    public void imprimirFila(int instante) {
-        Nodo n = this.inicio;
-        while (n != null) {
-            System.out.println("Instante de Tempo t " + instante + " Fila de pedidos " + n.getPedido().getCodigo());
-            n = n.getProximo();
+    public String imprimirFila() {
+        StringBuilder sb = new StringBuilder();
+        Nodo aux = inicio;
+        while(aux!=null) {
+            sb.append(aux.getPedido()).append(" ");
+            aux = aux.getProximo();
         }
+        return sb.toString();
     }
 
     // Certo!

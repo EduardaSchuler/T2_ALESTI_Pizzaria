@@ -29,15 +29,20 @@ public class App {
 
     // Este método atualiza conforme o tempo "t".
     public void executa() {
-        Scanner teclado = new Scanner(System.in);
+       BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         int tempo = 0;
         leitura();
         try {
             situacaoFilaSaida.println("Instante de Tempo t,Fila de pedidos,Em produção,Prontos");
-            while (entrada.hasNextLine() || !filaPedidosDinamica.estaVazia() || !pizzaria.pizzaioloDisponivel()) {
+            while (true) {
+                String teclado = reader.readLine();
                 System.out.println("Pressione <ENTER> para avançar um ciclo."); // teste so com o enter, depois implemento o C
-                teclado.nextLine();
+                if(teclado.isEmpty()){
+                    System.out.println(tempo);
+                }
                  processaCiclo(tempo);
+                System.out.println(filaPedidosDinamica.imprimirFila());
+                // Não esta imprimindo o ultimo
                 //registrarSituacaoFila(tempo);
                 tempo++;
             }
