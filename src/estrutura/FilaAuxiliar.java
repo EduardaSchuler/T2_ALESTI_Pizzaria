@@ -26,7 +26,7 @@ public class FilaAuxiliar {
         tamanho++;
     }
 
-    // Método para tirar um pedido da fila auxiliar.
+    // Certo! Método para tirar um pedido da fila auxiliar.
     public Pedido desenfileirar() {
         if (tamanho > 0) {
             if (inicio.getProximo() != null) {
@@ -38,9 +38,12 @@ public class FilaAuxiliar {
         }
         return null;
     }
+
     public boolean filaAuxEstaVazia() {
         return inicio == null;
     }
+
+    // O início sempre é atualizado ao desenfileirar.
     public Pedido getInicio(){
         return inicio.getPedido();
     }

@@ -36,6 +36,7 @@ public class App {
                 entrada.nextLine();
             }
             situacaoFilaSaida.println("Instante de Tempo t,Fila de pedidos,Em produção,Prontos");
+            leitura();
             while (entrada.hasNextLine() || !filaPedidosDinamica.estaVazia() || !pizzaria.pizzaioloDisponivel()) {
                 System.out.println("Pressione <ENTER> para avançar um ciclo."); // teste so com o enter, depois implemento o C
                 teclado.nextLine();
@@ -50,7 +51,9 @@ public class App {
         }
     }
     // A cada pressioamento de ENTER este método deve ser executado. Cada ENTER representa um ciclo.
-    private void processaCiclo(int tempo) {
+
+    // Certo! Método para enfileirar e colocar tudo na lista auxiliar.
+    private void leitura() {
         String linha;
         while (entrada.hasNextLine()) {
             linha = entrada.nextLine(); // O .trim() ignora espaços.
@@ -65,13 +68,17 @@ public class App {
                     filaAux.enfileirar(p);
                 } catch (NumberFormatException e) {
                     throw new RuntimeException(e);
+                }
             }
-          }
         }
+    }
+
+
+    private void processaCiclo(int tempo) {
         //Passando para a fila principal.
         while(!filaAux.filaAuxEstaVazia() && filaAux.getInicio().getInstante() == tempo){
-            Pedido p = filaAux.desenfileirar();
-             filaPedidosDinamica.enfileirar(p);
+            Pedido p = filaAux.desenfileirar(); // Tira da fila auxiliar.
+            filaPedidosDinamica.enfileirar(p); // Coloca na fila dinâmica.
         }
 
         pizzaria.processarPedido();
@@ -84,6 +91,8 @@ public class App {
             }
         }
     }
+
+
     private void registrarSituacaoFila(int instante) {
         StringBuilder fila = new StringBuilder();
         Nodo nodoAtual = filaPedidosDinamica.getInicio();
