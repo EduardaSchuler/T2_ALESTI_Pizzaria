@@ -34,7 +34,6 @@ public class App {
         leitura();
         try {
             situacaoFilaSaida.println("Instante de Tempo t,Fila de pedidos,Em produção,Prontos");
-            System.out.println("Pressione <ENTER> para avançar um ciclo."); // teste so com o enter, depois implemento o C
             while (true) {
                 String teclado = reader.readLine();
                 System.out.println("Pressione <ENTER> para avançar um ciclo."); // teste so com o enter, depois implemento o C
@@ -71,6 +70,7 @@ public class App {
                     int instante = Integer.parseInt(valores[2]); // O instante "t"
                     int tempoPreparo = Integer.parseInt(valores[3]); // O tempo de preparo
                     Pedido p = new Pedido(codigo, saborPizza, instante, tempoPreparo); // O pedido de fato está sendo criado.
+                    filaAux.enfileirar(p);
                 } catch (NumberFormatException e) {
                     throw new RuntimeException(e);
                 }
