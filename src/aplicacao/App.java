@@ -1,7 +1,6 @@
 package aplicacao;
 import estrutura.*;
 import gerenciamento.*;
-
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
@@ -11,6 +10,7 @@ public class App {
     private FilaPedidosDinamica filaPedidosDinamica;
     private Pizzaria pizzaria;
     private FilaAuxiliar filaAux;
+    private ArvoreBinariaPesquisa abp;
     private PrintStream situacaoFilaSaida; // É o arquivo de saída.
 
     public App() {
@@ -24,7 +24,8 @@ public class App {
         }
         filaPedidosDinamica = new FilaPedidosDinamica();
         filaAux = new FilaAuxiliar();
-        pizzaria = new Pizzaria();
+        abp = new ArvoreBinariaPesquisa();
+        pizzaria = new Pizzaria(abp);
     }
 
     // Este método atualiza conforme o tempo "t".
@@ -42,8 +43,7 @@ public class App {
                 }
                 colocaNaFila(tempo);
                 processaCiclo(tempo);
-                // Não esta imprimindo o ultimo
-                // Talvez pegar o fim da fila e somar o tempo de preparo parar fechar o ciclo.
+                registraSituacao(tempo);
                 //registrarSituacaoFila(tempo);
                 tempo++;
             }
@@ -90,7 +90,6 @@ public class App {
             }
         }
     }
-
     private void processaCiclo(int tempo) {
         pizzaria.processarPedido();
         if (pizzaria.pizzaioloDisponivel()) {
@@ -98,14 +97,32 @@ public class App {
                 Pedido proximoPedido = filaPedidosDinamica.desenfileirar();
                 if (proximoPedido != null) {
                     pizzaria.adicionarPedido(proximoPedido);
-                    System.out.println("Pedido de " + proximoPedido.getSaborPizza() + " retirado da fila e em produção.");
+                    // System.out.println("Pedido de " + proximoPedido.getSaborPizza() + " retirado da fila e em produção.");
                 }
             }
         }
         // Imprime o estado atual da pizzaria
         System.out.println("Instante de Tempo " + tempo + ", Em produção: " + pizzaria.getPedidoAtual());
     }
+    public void registraSituacao(int tempo) {
+        String mensagem = tempo + ", ";
+        mensagem += filaPedidosDinamica.imprimirFila();
+        if (pizzaria.getPedidoAtual() == null) {
+            mensagem += " ";
+        } else {
+            mensagem += "Pedido atual:" + pizzaria.getPedidoAtual().getCodigo();
+            if (pizzaria.getPedidosProntos() == null) {
+                mensagem += "";
+            } else {
+                if (abp != null) {
+                    mensagem += " Pedidos prontos: " + abp.imprimirCodigosArvore();
+                } else {
+                    mensagem += "";
+                }
+            }
+        }
+        situacaoFilaSaida.println(mensagem);
+    }
 }
-
 
 

@@ -65,20 +65,41 @@ public class ArvoreBinariaPesquisa {
     }
 
     // Certo!
-    public void imprimirArvore() {
-        imprimirArvoreRecursivamente(this.raiz, 0);
+    public String imprimirArvore() {
+       return imprimirArvoreRecursivamente(this.raiz, 0);
+    }
+    // Certo!
+    private String imprimirArvoreRecursivamente(Nodo raiz, int nivel) {
+        StringBuilder sb = new StringBuilder();
+        if (raiz == null) return sb.toString();
+        nivel += 5;
+        sb.append(imprimirArvoreRecursivamente(raiz.getDireita(), nivel));
+        sb.append("\n");
+        for (int i = 5; i < nivel; i++) sb.append(" ");
+        sb.append(raiz.getPedido()).append("\n");
+        for (int i = 0; i < nivel; i++) sb.append(" ");
+        sb.append(imprimirArvoreRecursivamente(raiz.getEsquerda(), nivel));
+        return sb.toString();
+    }
+    public String imprimirCodigosArvore() {
+        return imprimirCodigosArvoreRecursivamente(this.raiz);
     }
 
-    // Certo!
-    private void imprimirArvoreRecursivamente(Nodo raiz, int nivel) {
-        if (raiz == null) return;
-        nivel += 5;
-        imprimirArvoreRecursivamente(raiz.getDireita(), nivel);
-        System.out.print("\n");
-        for (int i = 5; i < nivel; i++) System.out.print(" ");
-        System.out.print(raiz.getPedido() + "\n");
-        for (int i = 0; i < nivel; i++) System.out.print(" ");
-        imprimirArvoreRecursivamente(raiz.getEsquerda(), nivel);
+    private String imprimirCodigosArvoreRecursivamente(Nodo raiz) {
+        StringBuilder sb = new StringBuilder();
+        if (raiz == null) {
+            return sb.toString();
+        }
+        if (raiz.getEsquerda() != null) {
+            sb.append(imprimirCodigosArvoreRecursivamente(raiz.getEsquerda())).append(" ");
+        }
+        sb.append(raiz.getPedido().getCodigo()).append(" ");
+        if (raiz.getDireita() != null) {
+            sb.append(imprimirCodigosArvoreRecursivamente(raiz.getDireita())).append(" ");
+        }
+        return sb.toString();
     }
+
+
 }
 
