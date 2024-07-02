@@ -42,7 +42,6 @@ public class App {
                 }
                 colocaNaFila(tempo);
                 processaCiclo(tempo);
-                situacaoFilaSaida.println(tempo + "," + filaPedidosDinamica.imprimirFila());
                 // Não esta imprimindo o ultimo
                 // Talvez pegar o fim da fila e somar o tempo de preparo parar fechar o ciclo.
                 //registrarSituacaoFila(tempo);

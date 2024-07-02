@@ -6,6 +6,7 @@ public class Pizzaria {
     private FilaPedidosDinamica listaPedido; // Possui uma fila dinâmica com os pedidos que estão em espera.
     private int tempoTotal; // É o tempo total de processamento. É o "t".
     private ArvoreBinariaPesquisa abp; // Possui uma árvore binária de pesquisa onde os pedidos realizados são alocados.
+    private ListaFinalizados lista;
 
     // Certo!
     public Pizzaria(){
@@ -13,6 +14,7 @@ public class Pizzaria {
         this.listaPedido = new FilaPedidosDinamica();
         this.tempoTotal = 0;
         this.abp = new ArvoreBinariaPesquisa();
+        this.lista = new ListaFinalizados();
     }
 
     // Certo!
@@ -32,6 +34,7 @@ public class Pizzaria {
             pedidoAtual.setTempoPreparo(pedidoAtual.getTempoPreparo() - 1);
             if (pedidoAtual.getTempoPreparo() <= 0) {
                 abp.adicionar(pedidoAtual);// Uma referência ao pedido atual é armazenada.
+                lista.adicionar(pedidoAtual);// Adiciona o pedido pronto a lista de pedidos finalizados
                 pedidoAtual = null; // Fica nulo para o próximo pedido da fila.
             }
         }
