@@ -11,14 +11,17 @@ public class App {
     private Pizzaria pizzaria;
     private FilaAuxiliar filaAux;
     private ArvoreBinariaPesquisa abp;
-    private PrintStream situacaoFilaSaida; // É o arquivo de saída.
+    private PrintStream situacaoFilaSaida;
+    private PrintStream situacaoArvore;
+    private PrintStream relatorioGeral;
 
     public App() {
         try {
             BufferedReader streamEntrada = new BufferedReader(new FileReader("pedidos_pizza_15.csv")); // Este é o arquivo de entrada.
             entrada = new Scanner(streamEntrada);
             situacaoFilaSaida = new PrintStream(new File("situacao_fila.csv"), StandardCharsets.UTF_8); // Este é o arquivo de saída.
-            // Precisamos um para árvore também.
+            situacaoArvore = new PrintStream(new File("abp_prontos.csv"), StandardCharsets.UTF_8); // Este é o arquivo de saída.
+            relatorioGeral = new PrintStream(new File("relatorio_geral.csv"), StandardCharsets.UTF_8);
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -27,7 +30,6 @@ public class App {
         abp = new ArvoreBinariaPesquisa();
         pizzaria = new Pizzaria(abp);
     }
-
     // Este método atualiza conforme o tempo "t".
     public void executa() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -35,26 +37,28 @@ public class App {
         leitura();
         try {
             situacaoFilaSaida.println("Instante de Tempo t,Fila de pedidos,Em produção,Prontos");
+            situacaoArvore.println("Pedidos prontos: ");
+            relatorioGeral.println("Relatório Geral: ");
             System.out.println("Pressione <ENTER> para a simulação ciclo a ciclo ou <C> para a simulação contínua"); // teste so com o enter, depois implemento o C
             while (true) {
                 String teclado = reader.readLine();
                 System.out.println("Pressione <ENTER> para avançar um ciclo."); // teste so com o enter, depois implemento o C
                 if (teclado.isEmpty()) {
-                    System.out.println(tempo);
+                    System.out.println("Instante: "+ tempo);
                 }
                 colocaNaFila(tempo);
                 processaCiclo(tempo);
                 registraSituacao(tempo);
-                //registrarSituacaoFila(tempo);
                 tempo++;
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             situacaoFilaSaida.close();
+            situacaoArvore.close();
+            relatorioGeral.close();
         }
     }
-
     // A cada pressioamento de ENTER este método deve ser executado. Cada ENTER representa um ciclo.
     // Certo! Método para enfileirar e colocar tudo na lista auxiliar.
     private void leitura() {
@@ -79,7 +83,6 @@ public class App {
             }
         }
     }
-
     private void colocaNaFila(int tempo) {
         //Passando para a fila principal.
         while (!filaAux.filaAuxEstaVazia() && filaAux.getInicio().getInstante() == tempo) {
@@ -102,8 +105,6 @@ public class App {
                 }
             }
         }
-        // Imprime o estado atual da pizzaria
-        System.out.println("Instante de Tempo " + tempo + ", Em produção: " + pizzaria.getPedidoAtual());
     }
     public void registraSituacao(int tempo) {
         String mensagem = tempo + ", ";
