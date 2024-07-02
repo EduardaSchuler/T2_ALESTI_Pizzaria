@@ -36,15 +36,15 @@ public class FilaPedidosDinamica {
     // O pedido que foi desenfileirado não precisa ser retornado? Talvez para enviar o pedido para produção.
     // Certo!
     public Pedido desenfileirar() {
+        Pedido antigoInicio = null;
         if (pedidosPendentes > 0) {
-            if (inicio.getProximo() != null) {
+                antigoInicio = inicio.getPedido();
                 inicio = inicio.getProximo();
                 pedidosPendentes--;
+                return antigoInicio;
             }
-        }
-        return null;
+        return antigoInicio;
     }
-
     // Certo! É para pegar o tamanho.
     public int getPedidosPendentes() {
         return pedidosPendentes;
@@ -57,7 +57,7 @@ public class FilaPedidosDinamica {
         StringBuilder sb = new StringBuilder();
         Nodo aux = inicio;
         while(aux!=null) {
-            sb.append(aux.getPedido()).append(" ");
+            sb.append(aux.getPedido().getCodigo()).append(",");
             aux = aux.getProximo();
         }
         return sb.toString();
@@ -67,5 +67,6 @@ public class FilaPedidosDinamica {
     public boolean estaVazia() {
         return inicio == null;
     }
+    
 }
 

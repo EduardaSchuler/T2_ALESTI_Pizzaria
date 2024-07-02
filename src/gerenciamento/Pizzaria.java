@@ -23,29 +23,27 @@ public class Pizzaria {
             listaPedido.enfileirar(p); // Se já houver algum pedido atual, o pedido "p" será alocado na fila.
         }
     }
-
+    public void setPedidoAtual(Pedido pedidoAtual) {
+        this.pedidoAtual = pedidoAtual;
+    }
     // Certo!
     public void processarPedido() {
         if (pedidoAtual != null) {
             pedidoAtual.setTempoPreparo(pedidoAtual.getTempoPreparo() - 1);
-            tempoTotal++; // Tempo total é o "t", é o instante.
-            if (pedidoAtual.getTempoPreparo() == 0) {
-                abp.adicionar(pedidoAtual); // Uma referência ao pedido atual é armazenada.
+            if (pedidoAtual.getTempoPreparo() <= 0) {
+                abp.adicionar(pedidoAtual);// Uma referência ao pedido atual é armazenada.
                 pedidoAtual = null; // Fica nulo para o próximo pedido da fila.
             }
         }
     }
-
     // Certo!
     public boolean pizzaioloDisponivel() {
         return pedidoAtual == null; // O pizzaiolo só está disponível se o pedido atual for nulo.
     }
-
     // Certo!
     public Pedido getPedidoAtual() {
         return pedidoAtual;
     }
-
     // Certo!
     public ArvoreBinariaPesquisa getPedidosProntos() {
         return abp;

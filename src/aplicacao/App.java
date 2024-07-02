@@ -29,7 +29,7 @@ public class App {
 
     // Este método atualiza conforme o tempo "t".
     public void executa() {
-       BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         int tempo = 0;
         leitura();
         try {
@@ -37,11 +37,12 @@ public class App {
             while (true) {
                 String teclado = reader.readLine();
                 System.out.println("Pressione <ENTER> para avançar um ciclo."); // teste so com o enter, depois implemento o C
-                if(teclado.isEmpty()){
+                if (teclado.isEmpty()) {
                     System.out.println(tempo);
                 }
-                 processaCiclo(tempo);
-                System.out.println(filaPedidosDinamica.imprimirFila());
+                colocaNaFila(tempo);
+                processaCiclo(tempo);
+                situacaoFilaSaida.println(tempo + "," + filaPedidosDinamica.imprimirFila());
                 // Não esta imprimindo o ultimo
                 // Talvez pegar o fim da fila e somar o tempo de preparo parar fechar o ciclo.
                 //registrarSituacaoFila(tempo);
@@ -53,6 +54,7 @@ public class App {
             situacaoFilaSaida.close();
         }
     }
+
     // A cada pressioamento de ENTER este método deve ser executado. Cada ENTER representa um ciclo.
     // Certo! Método para enfileirar e colocar tudo na lista auxiliar.
     private void leitura() {
@@ -77,42 +79,34 @@ public class App {
             }
         }
     }
-    private void processaCiclo(int tempo) {
+
+    private void colocaNaFila(int tempo) {
         //Passando para a fila principal.
-        while(!filaAux.filaAuxEstaVazia() && filaAux.getInicio().getInstante() == tempo){
+        while (!filaAux.filaAuxEstaVazia() && filaAux.getInicio().getInstante() == tempo) {
             Pedido p = filaAux.desenfileirar(); // Tira da fila auxiliar.
-            filaPedidosDinamica.enfileirar(p); // Coloca na fila dinâmica.
+            if (filaPedidosDinamica.getPedidosPendentes() == 0 && pizzaria.getPedidoAtual() == null) {
+                pizzaria.setPedidoAtual(p);
+            } else {
+                filaPedidosDinamica.enfileirar(p); // Coloca na fila dinâmica.
+            }
         }
     }
-//        pizzaria.processarPedido();
-//        if (pizzaria.pizzaioloDisponivel() && !filaPedidosDinamica.estaVazia()) {
-//            Pedido proximoPedido = filaPedidosDinamica.desenfileirar();
-//            if (proximoPedido != null) {
-//                pizzaria.adicionarPedido(proximoPedido);
-//                //teste
-//                System.out.println("Pedido de " + proximoPedido.getSaborPizza() + " retirado da fila e em produção.");
-//            }
-//        }
-//    }
-//    private void registrarSituacaoFila(int instante) {
-//        StringBuilder fila = new StringBuilder();
-//        Nodo nodoAtual = filaPedidosDinamica.getInicio();
-//        System.out.println(filaPedidosDinamica.getInicio()); //Não esta adicionando a fila, o getInicio retorna null no teste
-//        while (nodoAtual != null) {
-//            Pedido pedido = nodoAtual.getPedido();
-//            fila.append(pedido.getCodigo()).append(",");
-//            nodoAtual = nodoAtual.getProximo();
-//        }
-//        if (fila.length() > 0) fila.setLength(fila.length() - 1);
-//        Pedido emProducao = pizzaria.getPedidoAtual();
-//        StringBuilder prontos = new StringBuilder();
-//        // pizzaria.getPedidosProntos().emOrdem(prontos);
-//        // falta implementar algo para ver o que esta sendo produzido
-//        System.out.println(instante + fila.toString());
-//        if (prontos.length() > 0) prontos.setLength(prontos.length() - 1);
-//        // situacaoFilaSaida.printf("%d,%s,%s,%s%n", instante, fila.toString(), prontos.toString());
-    }
 
+    private void processaCiclo(int tempo) {
+        pizzaria.processarPedido();
+        if (pizzaria.pizzaioloDisponivel()) {
+            if (pizzaria.getPedidoAtual() == null) {
+                Pedido proximoPedido = filaPedidosDinamica.desenfileirar();
+                if (proximoPedido != null) {
+                    pizzaria.adicionarPedido(proximoPedido);
+                    System.out.println("Pedido de " + proximoPedido.getSaborPizza() + " retirado da fila e em produção.");
+                }
+            }
+        }
+        // Imprime o estado atual da pizzaria
+        System.out.println("Instante de Tempo " + tempo + ", Em produção: " + pizzaria.getPedidoAtual());
+    }
+}
 
 
 

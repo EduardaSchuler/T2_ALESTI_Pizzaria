@@ -29,12 +29,10 @@ public class FilaAuxiliar {
     // Certo! Método para tirar um pedido da fila auxiliar.
     public Pedido desenfileirar() {
         if (tamanho > 0) {
-            if (inicio.getProximo() != null) {
                 Pedido aux = inicio.getPedido();
                 inicio = inicio.getProximo();
                 tamanho--;
                 return aux;
-            }
         }
         return null;
     }
