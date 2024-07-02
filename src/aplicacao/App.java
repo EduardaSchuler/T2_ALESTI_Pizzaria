@@ -35,6 +35,7 @@ public class App {
         leitura();
         try {
             situacaoFilaSaida.println("Instante de Tempo t,Fila de pedidos,Em produção,Prontos");
+            System.out.println("Pressione <ENTER> para a simulação ciclo a ciclo ou <C> para a simulação contínua"); // teste so com o enter, depois implemento o C
             while (true) {
                 String teclado = reader.readLine();
                 System.out.println("Pressione <ENTER> para avançar um ciclo."); // teste so com o enter, depois implemento o C
