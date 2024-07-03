@@ -51,6 +51,7 @@ public class App {
                     processaCiclo(tempo);
                     registraSituacaoFila(tempo);
                     registraSituacaoArvore();
+                    registraSituacaoGeral(tempo);
                     tempo++;
                 }
             } else {
@@ -64,6 +65,7 @@ public class App {
                     processaCiclo(tempo);
                     registraSituacaoFila(tempo);
                     registraSituacaoArvore();
+                    registraSituacaoGeral(tempo);
                     tempo++;
                 }
             }
