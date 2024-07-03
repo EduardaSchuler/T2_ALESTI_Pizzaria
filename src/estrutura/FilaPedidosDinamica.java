@@ -12,11 +12,9 @@ public class FilaPedidosDinamica {
         inicio = null;
         fim = null;
     }
-
     public Nodo getInicio() {
         return inicio;
     }
-
     public Pedido getPedido() {
         return inicio.getPedido();
     }
@@ -49,8 +47,6 @@ public class FilaPedidosDinamica {
     public int getPedidosPendentes() {
         return pedidosPendentes;
     }
-
-
     // Imprime a fila em determinado instante. Ou seja a cada ENTER terei um instante diferente, logo a fila muda.
     // Certo!
     public String imprimirFila() {
@@ -62,11 +58,9 @@ public class FilaPedidosDinamica {
         }
         return sb.toString();
     }
-
     // Certo!
     public boolean estaVazia() {
         return inicio == null;
     }
-    
 }
 

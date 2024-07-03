@@ -1,4 +1,5 @@
 package aplicacao;
+
 import estrutura.*;
 import gerenciamento.*;
 import java.io.*;
@@ -17,10 +18,10 @@ public class App {
 
     public App() {
         try {
-            BufferedReader streamEntrada = new BufferedReader(new FileReader("pedidos_pizza_15.csv")); // Este é o arquivo de entrada.
+            BufferedReader streamEntrada = new BufferedReader(new FileReader("pedidos_pizza_15.csv"));
             entrada = new Scanner(streamEntrada);
-            situacaoFilaSaida = new PrintStream(new File("situacao_fila.csv"), StandardCharsets.UTF_8); // Este é o arquivo de saída.
-            situacaoArvore = new PrintStream(new File("abp_prontos.csv"), StandardCharsets.UTF_8); // Este é o arquivo de saída.
+            situacaoFilaSaida = new PrintStream(new File("situacao_fila.csv"), StandardCharsets.UTF_8);
+            situacaoArvore = new PrintStream(new File("abp_prontos.csv"), StandardCharsets.UTF_8);
             relatorioGeral = new PrintStream(new File("relatorio_geral.csv"), StandardCharsets.UTF_8);
         } catch (Exception e) {
             System.out.println(e);
@@ -30,27 +31,43 @@ public class App {
         abp = new ArvoreBinariaPesquisa();
         pizzaria = new Pizzaria(abp);
     }
-    // Este método atualiza conforme o tempo "t".
     public void executa() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         int tempo = 0;
         leitura();
         try {
             situacaoFilaSaida.println("Instante de Tempo t,Fila de pedidos,Em produção,Prontos");
-            situacaoArvore.println("Pedidos prontos: ");
+            situacaoArvore.println("Caminhamento central da ABP a cada instante de tempo: ");
             relatorioGeral.println("Relatório Geral: ");
-            System.out.println("Pressione <ENTER> para a simulação ciclo a ciclo ou <C> para a simulação contínua"); // teste so com o enter, depois implemento o C
-            while (true) {
-                String teclado = reader.readLine();
-                System.out.println("Pressione <ENTER> para avançar um ciclo."); // teste so com o enter, depois implemento o C
-                if (teclado.isEmpty()) {
-                    System.out.println("Instante: "+ tempo);
+            registraSituacaoGeral(tempo);
+
+            System.out.println("Pressione <ENTER> para a simulação ciclo a ciclo ou <C> para a simulação contínua");
+
+            String teclado = reader.readLine();
+            if (teclado.equalsIgnoreCase("C")) {
+                while (!simulacaoConcluida()) {
+                    System.out.println("Instante: " + tempo);
+                    colocaNaFila(tempo);
+                    processaCiclo(tempo);
+                    registraSituacaoFila(tempo);
+                    registraSituacaoArvore();
+                    tempo++;
                 }
-                colocaNaFila(tempo);
-                processaCiclo(tempo);
-                registraSituacao(tempo);
-                tempo++;
+            } else {
+                while (!simulacaoConcluida()) {
+                    System.out.println("Pressione <ENTER> para avançar um ciclo.");
+                    teclado = reader.readLine();
+                    if (teclado.isEmpty()) {
+                        System.out.println("Instante: " + tempo);
+                    }
+                    colocaNaFila(tempo);
+                    processaCiclo(tempo);
+                    registraSituacaoFila(tempo);
+                    registraSituacaoArvore();
+                    tempo++;
+                }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -59,23 +76,24 @@ public class App {
             relatorioGeral.close();
         }
     }
-    // A cada pressioamento de ENTER este método deve ser executado. Cada ENTER representa um ciclo.
-    // Certo! Método para enfileirar e colocar tudo na lista auxiliar.
+    private boolean simulacaoConcluida() {
+        return filaAux.filaAuxEstaVazia() && filaPedidosDinamica.getPedidosPendentes() == 0 && pizzaria.getPedidoAtual() == null;
+    }
     private void leitura() {
         String linha;
-        if (entrada.hasNextLine()) { // Isso ocorre para pular a linha do cabeçalho.
+        if (entrada.hasNextLine()) {
             entrada.nextLine();
         }
         while (entrada.hasNextLine()) {
-            linha = entrada.nextLine(); // O .trim() ignora espaços.
+            linha = entrada.nextLine().trim();
             String[] valores = linha.split(",");
-            if (valores.length == 4) { // Temos índex de 0 a 3.
+            if (valores.length == 4) {
                 try {
-                    int codigo = Integer.parseInt(valores[0]); // O código
-                    String saborPizza = valores[1]; // O sabor
-                    int instante = Integer.parseInt(valores[2]); // O instante "t"
-                    int tempoPreparo = Integer.parseInt(valores[3]); // O tempo de preparo
-                    Pedido p = new Pedido(codigo, saborPizza, instante, tempoPreparo); // O pedido de fato está sendo criado.
+                    int codigo = Integer.parseInt(valores[0]);
+                    String saborPizza = valores[1];
+                    int instante = Integer.parseInt(valores[2]);
+                    int tempoPreparo = Integer.parseInt(valores[3]);
+                    Pedido p = new Pedido(codigo, saborPizza, instante, tempoPreparo);
                     filaAux.enfileirar(p);
                 } catch (NumberFormatException e) {
                     throw new RuntimeException(e);
@@ -84,13 +102,12 @@ public class App {
         }
     }
     private void colocaNaFila(int tempo) {
-        //Passando para a fila principal.
         while (!filaAux.filaAuxEstaVazia() && filaAux.getInicio().getInstante() == tempo) {
-            Pedido p = filaAux.desenfileirar(); // Tira da fila auxiliar.
+            Pedido p = filaAux.desenfileirar();
             if (filaPedidosDinamica.getPedidosPendentes() == 0 && pizzaria.getPedidoAtual() == null) {
                 pizzaria.setPedidoAtual(p);
             } else {
-                filaPedidosDinamica.enfileirar(p); // Coloca na fila dinâmica.
+                filaPedidosDinamica.enfileirar(p);
             }
         }
     }
@@ -101,18 +118,17 @@ public class App {
                 Pedido proximoPedido = filaPedidosDinamica.desenfileirar();
                 if (proximoPedido != null) {
                     pizzaria.adicionarPedido(proximoPedido);
-                    // System.out.println("Pedido de " + proximoPedido.getSaborPizza() + " retirado da fila e em produção.");
                 }
             }
         }
     }
-    public void registraSituacao(int tempo) {
+    public void registraSituacaoFila(int tempo) {
         String mensagem = tempo + ", ";
         mensagem += filaPedidosDinamica.imprimirFila();
         if (pizzaria.getPedidoAtual() == null) {
             mensagem += " ";
         } else {
-            mensagem += "Pedido atual:" + pizzaria.getPedidoAtual().getCodigo();
+            mensagem += "Pedido atual: " + pizzaria.getPedidoAtual().getCodigo();
             if (pizzaria.getPedidosProntos() == null) {
                 mensagem += "";
             } else {
@@ -125,6 +141,18 @@ public class App {
         }
         situacaoFilaSaida.println(mensagem);
     }
+    public void registraSituacaoArvore() {
+        situacaoArvore.println(abp.imprimirCodigosArvore());
+    }
+    public void registraSituacaoGeral(int tempo) {
+        relatorioGeral.println("Total de pedidos processados: " + pizzaria.totalPedidos());
+        relatorioGeral.println("Total de tempo executado: " + tempo);
+        relatorioGeral.println("falta o pedido mais demorado!!!!!!!");
+//        Pedido pedidoMaisDemorado = abp.getPedidoMaisDemorado();
+//        if (pedidoMaisDemorado != null) {
+//            relatorioGeral.println("Pedido mais demorado: " + pedidoMaisDemorado.getCodigo() + " com tempo de preparo de " + pedidoMaisDemorado.getTempoPreparo());
+//        } else {
+//            relatorioGeral.println("Nenhum pedido processado.");
+//        }
+    }
 }
-
-

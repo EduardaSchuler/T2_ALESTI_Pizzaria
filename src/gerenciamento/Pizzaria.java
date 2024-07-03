@@ -15,7 +15,6 @@ public class Pizzaria {
         this.abp = abp;
 
     }
-
     // Certo!
     public void adicionarPedido(Pedido p) {
         if (pedidoAtual == null) { // Se não houver pedido atual, o pedido "p" será o atual.
@@ -48,6 +47,9 @@ public class Pizzaria {
     // Certo!
     public ArvoreBinariaPesquisa getPedidosProntos() {
         return abp;
+    }
+    public int totalPedidos(){
+        return abp.getTamanho();
     }
 }
 

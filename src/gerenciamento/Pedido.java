@@ -5,6 +5,8 @@ public class Pedido{
     private String saborPizza;
     private int instante;
     private int tempoPreparo;
+    private int tempoTotalProcessamento;
+
 
     // Certo!
     public Pedido(int codigo, String saborPizza, int instante, int tempoPreparo){
@@ -12,6 +14,7 @@ public class Pedido{
         this.saborPizza = saborPizza;
         this.instante = instante;
         this.tempoPreparo = tempoPreparo;
+        this.tempoTotalProcessamento = 0;
     }
 
     // Certo!
@@ -40,9 +43,14 @@ public class Pedido{
         return "Codigo:" + getCodigo() + ", Sabor: " + getSaborPizza() + ", Instante:" + getInstante() + ", Tempo de preparo:"
                 + getTempoPreparo();
     }
-
     // Certo!
     public void setTempoPreparo(int tempoPreparo) {
         this.tempoPreparo = tempoPreparo;
     }
+//    public int getTempoTotalProcessamento() {
+//        return tempoTotalProcessamento;
+//    }
+//    public void setTempoTotalProcessamento(int tempoTotalProcessamento) {
+//        this.tempoTotalProcessamento = tempoTotalProcessamento;
+//    }
 }
